@@ -14,7 +14,7 @@
       "name": "ajudafio_mobile (Wi-Fi ADB)",
       "request": "launch",
       "type": "dart",
-      "deviceId": "192.168.0.15:37795"
+      "deviceId": "192.168.0.35:35291"
     },
     {
       "name": "ajudafio_mobile (profile mode)",

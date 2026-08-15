@@ -1,4 +1,5 @@
 import 'package:ajudafio_mobile/core/theme/theme.dart';
+import 'package:ajudafio_mobile/features/auth/presentation/pages/login_page.dart';
 import 'package:ajudafio_mobile/features/auth/presentation/pages/signup_page.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Ajudafio',
       theme: AppTheme.lightThemeMode,
-      home: const SignUpPage(),
+      home: const LoginPage(),
     );
   }
 }
