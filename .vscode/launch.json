@@ -1,0 +1,32 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+  
+    {
+      "name": "ajudafio_mobile",
+      "request": "launch",
+      "type": "dart"
+    },
+    {
+      "name": "ajudafio_mobile (Wi-Fi ADB)",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "192.168.0.15:37795"
+    },
+    {
+      "name": "ajudafio_mobile (profile mode)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile"
+    },
+    {
+      "name": "ajudafio_mobile (release mode)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release"
+    }
+  ]
+}
