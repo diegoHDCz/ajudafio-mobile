@@ -27,61 +27,81 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.only(
-          top: 20.0,
-          left: 20,
-          right: 20,
-          bottom: 0.0,
-        ),
-        child: Form(
-          key: formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset('assets/images/ajudafio_logo2.png', height: 120),
-              const SizedBox(height: 20),
-              const Text(
-                'Sign In',
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                  color: AppPallet.textColor,
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              padding: const EdgeInsets.only(
+                top: 20.0,
+                left: 20,
+                right: 20,
+                bottom: 20.0,
+              ),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: constraints.maxHeight - 40.0,
                 ),
-              ),
-              const SizedBox(height: 30),
-              AuthField(hintText: 'E-mail', controller: emailController),
-              const SizedBox(height: 15),
-              AuthField(
-                hintText: 'Password',
-                controller: passwordController,
-                isObscureText: true,
-              ),
-              const SizedBox(height: 30),
-              const AuthGradientButton(buttonText: 'Sign In'),
-              const SizedBox(height: 20),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(context, SignUpPage.route());
-                },
-                child: RichText(
-                  text: TextSpan(
-                    text: 'Don\'t have an account? ',
-                    style: TextStyle(color: AppPallet.textColorSecondary),
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      TextSpan(
-                        text: 'Sign Up',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: AppPallet.primaryColor,
+                      Image.asset(
+                        'assets/images/ajudafio_logo2.png',
+                        height: 120,
+                      ),
+                      const SizedBox(height: 20),
+                      const Text(
+                        'Sign In',
+                        style: TextStyle(
+                          fontSize: 25,
                           fontWeight: FontWeight.bold,
+                          color: AppPallet.textColor,
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      AuthField(
+                        hintText: 'E-mail',
+                        controller: emailController,
+                      ),
+                      const SizedBox(height: 15),
+                      AuthField(
+                        hintText: 'Password',
+                        controller: passwordController,
+                        isObscureText: true,
+                      ),
+                      const SizedBox(height: 30),
+                      const AuthGradientButton(buttonText: 'Sign In'),
+                      const SizedBox(height: 20),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(context, SignUpPage.route());
+                        },
+                        child: RichText(
+                          text: TextSpan(
+                            text: 'Don\'t have an account? ',
+                            style: TextStyle(
+                              color: AppPallet.textColorSecondary,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: 'Sign Up',
+                                style: Theme.of(context).textTheme.bodyMedium
+                                    ?.copyWith(
+                                      color: AppPallet.primaryColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
               ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );

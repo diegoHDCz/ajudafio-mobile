@@ -10,7 +10,7 @@ class AppPallet {
   static const Color primaryColorDark = Color(0xFF0145AE);
 
   // Verde (texto/folha "Fio")
-  static const Color secondaryColor = Color(0xFF399A24);
+  static const Color secondaryColor = Color.fromARGB(255, 27, 138, 60);
   static const Color secondaryColorLight = Color(0xFF4AAF29);
   static const Color secondaryColorDark = Color(0xFF1C6C17);
 
