@@ -1,4 +1,7 @@
 import 'package:ajudafio_mobile/core/theme/app_pallet.dart';
+import 'package:ajudafio_mobile/features/auth/data/datasources/auth_remote_data_resource.dart';
+import 'package:ajudafio_mobile/features/auth/data/repositories/auth_repository_impl.dart';
+import 'package:ajudafio_mobile/features/auth/domain/auth_repository.dart';
 import 'package:ajudafio_mobile/features/auth/presentation/pages/signup_page.dart';
 import 'package:ajudafio_mobile/features/auth/presentation/widgets/auth_field.dart';
 import 'package:ajudafio_mobile/features/auth/presentation/widgets/auth_gradient_button.dart';
@@ -16,12 +19,37 @@ class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  final AuthRepository authRepository = AuthRepositoryImpl(
+    AuthRemoteDataResourceImpl(),
+  );
+  bool isLoading = false;
 
   @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
+  }
+
+  Future<void> onLoginPressed() async {
+    if (!formKey.currentState!.validate()) return;
+
+    setState(() => isLoading = true);
+    final result = await authRepository.loginWithEmailPassword(
+      email: emailController.text.trim(),
+      password: passwordController.text,
+    );
+    if (!mounted) return;
+    setState(() => isLoading = false);
+
+    result.fold(
+      (failure) => ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(failure.message))),
+      (token) => ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Login realizado com sucesso!')),
+      ),
+    );
   }
 
   @override
@@ -71,7 +99,11 @@ class _LoginPageState extends State<LoginPage> {
                         isObscureText: true,
                       ),
                       const SizedBox(height: 30),
-                      const AuthGradientButton(buttonText: 'Sign In'),
+                      AuthGradientButton(
+                        buttonText: 'Sign In',
+                        isLoading: isLoading,
+                        onPressed: onLoginPressed,
+                      ),
                       const SizedBox(height: 20),
                       GestureDetector(
                         onTap: () {
