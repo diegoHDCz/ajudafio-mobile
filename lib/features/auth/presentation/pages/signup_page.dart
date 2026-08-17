@@ -38,7 +38,7 @@ class _SignUpPageState extends State<SignUpPage> {
     context.read<AuthBloc>().add(
       AuthSignUp(
         name: nameController.text.trim(),
-        email: emailController.text.trim(),
+        email: emailController.text.trim().toLowerCase(),
         password: passwordController.text,
         phone: phoneController.text.trim(),
       ),
@@ -141,7 +141,9 @@ class _SignUpPageState extends State<SignUpPage> {
                                 children: [
                                   TextSpan(
                                     text: 'Sign In',
-                                    style: Theme.of(context).textTheme.bodyMedium
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
                                         ?.copyWith(
                                           color: AppPallet.primaryColor,
                                           fontWeight: FontWeight.bold,

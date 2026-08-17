@@ -32,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
 
     context.read<AuthBloc>().add(
       AuthLogin(
-        email: emailController.text.trim(),
+        email: emailController.text.trim().toLowerCase(),
         password: passwordController.text,
       ),
     );
@@ -120,7 +120,9 @@ class _LoginPageState extends State<LoginPage> {
                                 children: [
                                   TextSpan(
                                     text: 'Sign Up',
-                                    style: Theme.of(context).textTheme.bodyMedium
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
                                         ?.copyWith(
                                           color: AppPallet.primaryColor,
                                           fontWeight: FontWeight.bold,
