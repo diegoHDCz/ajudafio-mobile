@@ -2,7 +2,7 @@ import 'package:ajudafio_mobile/core/error/failures.dart';
 import 'package:fpdart/fpdart.dart';
 
 abstract interface class AuthRepository {
-  Future<Either<Failure, void>> signUpWithEmailPassword({
+  Future<Either<Failure, String>> signUpWithEmailPassword({
     required String name,
     required String email,
     required String password,
