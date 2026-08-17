@@ -38,6 +38,7 @@ dependencies:
   fpdart: ^1.2.0
   http: ^1.2.0
   flutter_dotenv: ^6.0.1
+  flutter_bloc: ^9.1.1
 
 dev_dependencies:
   flutter_test:

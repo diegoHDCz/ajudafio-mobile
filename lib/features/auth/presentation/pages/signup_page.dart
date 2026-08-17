@@ -1,12 +1,11 @@
 import 'package:ajudafio_mobile/core/theme/app_pallet.dart';
 import 'package:ajudafio_mobile/core/utils/phone_input_formatter.dart';
-import 'package:ajudafio_mobile/features/auth/data/datasources/auth_remote_data_resource.dart';
-import 'package:ajudafio_mobile/features/auth/data/repositories/auth_repository_impl.dart';
-import 'package:ajudafio_mobile/features/auth/domain/auth_repository.dart';
+import 'package:ajudafio_mobile/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:ajudafio_mobile/features/auth/presentation/pages/login_page.dart';
 import 'package:ajudafio_mobile/features/auth/presentation/widgets/auth_field.dart';
 import 'package:ajudafio_mobile/features/auth/presentation/widgets/auth_gradient_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SignUpPage extends StatefulWidget {
   static route() => MaterialPageRoute(builder: (context) => const SignUpPage());
@@ -22,9 +21,6 @@ class _SignUpPageState extends State<SignUpPage> {
   final passwordController = TextEditingController();
   final phoneController = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  final AuthRepository authRepository = AuthRepositoryImpl(
-    AuthRemoteDataResourceImpl(),
-  );
   bool isLoading = false;
 
   @override
@@ -39,27 +35,15 @@ class _SignUpPageState extends State<SignUpPage> {
   Future<void> onSignUpPressed() async {
     if (!formKey.currentState!.validate()) return;
 
-    setState(() => isLoading = true);
-    final result = await authRepository.signUpWithEmailPassword(
-      name: nameController.text.trim(),
-      email: emailController.text.trim(),
-      password: passwordController.text,
-      phone: sanitizePhone(phoneController.text),
+    context.read<AuthBloc>().add(
+      AuthSignUp(
+        name: nameController.text.trim(),
+        email: emailController.text.trim(),
+        password: passwordController.text,
+        phone: phoneController.text.trim(),
+      ),
     );
-    if (!mounted) return;
-    setState(() => isLoading = false);
-
-    result.fold(
-      (failure) => ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(failure.message))),
-      (_) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Cadastro realizado com sucesso!')),
-        );
-        Navigator.pushReplacement(context, LoginPage.route());
-      },
-    );
+    
   }
 
   @override
