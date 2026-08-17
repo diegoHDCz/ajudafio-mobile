@@ -4,6 +4,7 @@ import 'package:ajudafio_mobile/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:ajudafio_mobile/features/auth/presentation/pages/login_page.dart';
 import 'package:ajudafio_mobile/features/auth/presentation/widgets/auth_field.dart';
 import 'package:ajudafio_mobile/features/auth/presentation/widgets/auth_gradient_button.dart';
+import 'package:ajudafio_mobile/features/home/presentation/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,7 +22,6 @@ class _SignUpPageState extends State<SignUpPage> {
   final passwordController = TextEditingController();
   final phoneController = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  bool isLoading = false;
 
   @override
   void dispose() {
@@ -32,7 +32,7 @@ class _SignUpPageState extends State<SignUpPage> {
     super.dispose();
   }
 
-  Future<void> onSignUpPressed() async {
+  void onSignUpPressed() {
     if (!formKey.currentState!.validate()) return;
 
     context.read<AuthBloc>().add(
@@ -43,7 +43,6 @@ class _SignUpPageState extends State<SignUpPage> {
         phone: phoneController.text.trim(),
       ),
     );
-    
   }
 
   @override
@@ -51,95 +50,113 @@ class _SignUpPageState extends State<SignUpPage> {
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return SingleChildScrollView(
-              padding: const EdgeInsets.only(
-                top: 20.0,
-                left: 20,
-                right: 20,
-                bottom: 20.0,
-              ),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: constraints.maxHeight - 40.0,
-                ),
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'assets/images/ajudafio_logo2.png',
-                        height: 120,
-                      ),
-                      const SizedBox(height: 20),
-                      const Text(
-                        'Sign Up',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: AppPallet.textColor,
-                        ),
-                      ),
-                      const SizedBox(height: 30),
-                      AuthField(
-                        hintText: 'Name',
-                        controller: nameController,
-                      ),
-                      const SizedBox(height: 15),
-                      AuthField(
-                        hintText: 'E-mail',
-                        controller: emailController,
-                      ),
-                      const SizedBox(height: 15),
-                      AuthField(
-                        hintText: 'Phone',
-                        controller: phoneController,
-                        keyboardType: TextInputType.phone,
-                        inputFormatters: [PhoneInputFormatter()],
-                        validator: phoneValidator,
-                      ),
-                      const SizedBox(height: 15),
-                      AuthField(
-                        hintText: 'Password',
-                        controller: passwordController,
-                        isObscureText: true,
-                      ),
-                      const SizedBox(height: 30),
-                      AuthGradientButton(
-                        buttonText: 'Sign Up',
-                        isLoading: isLoading,
-                        onPressed: onSignUpPressed,
-                      ),
-                      const SizedBox(height: 20),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(context, LoginPage.route());
-                        },
-                        child: RichText(
-                          text: TextSpan(
-                            text: 'Already have an account? ',
-                            style: TextStyle(
-                              color: AppPallet.textColorSecondary,
-                            ),
-                            children: [
-                              TextSpan(
-                                text: 'Sign In',
-                                style: Theme.of(context).textTheme.bodyMedium
-                                    ?.copyWith(
-                                      color: AppPallet.primaryColor,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
+        child: BlocConsumer<AuthBloc, AuthState>(
+          listener: (context, state) {
+            if (state is AuthFailure) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(state.message)));
+            } else if (state is AuthSuccess) {
+              Navigator.pushAndRemoveUntil(
+                context,
+                HomePage.route(state.user),
+                (route) => false,
+              );
+            }
+          },
+          builder: (context, state) {
+            final isLoading = state is AuthLoading;
+            return LayoutBuilder(
+              builder: (context, constraints) {
+                return SingleChildScrollView(
+                  padding: const EdgeInsets.only(
+                    top: 20.0,
+                    left: 20,
+                    right: 20,
+                    bottom: 20.0,
                   ),
-                ),
-              ),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: constraints.maxHeight - 40.0,
+                    ),
+                    child: Form(
+                      key: formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/images/ajudafio_logo2.png',
+                            height: 120,
+                          ),
+                          const SizedBox(height: 20),
+                          const Text(
+                            'Sign Up',
+                            style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                              color: AppPallet.textColor,
+                            ),
+                          ),
+                          const SizedBox(height: 30),
+                          AuthField(
+                            hintText: 'Name',
+                            controller: nameController,
+                          ),
+                          const SizedBox(height: 15),
+                          AuthField(
+                            hintText: 'E-mail',
+                            controller: emailController,
+                          ),
+                          const SizedBox(height: 15),
+                          AuthField(
+                            hintText: 'Phone',
+                            controller: phoneController,
+                            keyboardType: TextInputType.phone,
+                            inputFormatters: [PhoneInputFormatter()],
+                            validator: phoneValidator,
+                          ),
+                          const SizedBox(height: 15),
+                          AuthField(
+                            hintText: 'Password',
+                            controller: passwordController,
+                            isObscureText: true,
+                          ),
+                          const SizedBox(height: 30),
+                          AuthGradientButton(
+                            buttonText: 'Sign Up',
+                            isLoading: isLoading,
+                            onPressed: onSignUpPressed,
+                          ),
+                          const SizedBox(height: 20),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(context, LoginPage.route());
+                            },
+                            child: RichText(
+                              text: TextSpan(
+                                text: 'Already have an account? ',
+                                style: TextStyle(
+                                  color: AppPallet.textColorSecondary,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: 'Sign In',
+                                    style: Theme.of(context).textTheme.bodyMedium
+                                        ?.copyWith(
+                                          color: AppPallet.primaryColor,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
             );
           },
         ),

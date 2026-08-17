@@ -1,5 +1,6 @@
 import 'package:ajudafio_mobile/core/theme/app_pallet.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class AuthGradientButton extends StatelessWidget {
   final String buttonText;
@@ -31,13 +32,9 @@ class AuthGradientButton extends StatelessWidget {
           shadowColor: AppPallet.transparentColor,
         ),
         child: isLoading
-            ? const SizedBox(
-                height: 24,
-                width: 24,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2.5,
-                  color: Colors.white,
-                ),
+            ? LoadingAnimationWidget.waveDots(
+                color: AppPallet.surfaceColor,
+                size: 28,
               )
             : Text(
                 buttonText,

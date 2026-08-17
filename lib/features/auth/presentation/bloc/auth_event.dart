@@ -16,3 +16,12 @@ final class AuthSignUp extends AuthEvent {
     required this.phone,
   });
 }
+
+final class AuthLogin extends AuthEvent {
+  final String email;
+  final String password;
+
+  AuthLogin({required this.email, required this.password});
+}
+
+final class AuthLogout extends AuthEvent {}
