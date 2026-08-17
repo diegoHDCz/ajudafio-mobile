@@ -1,10 +1,11 @@
 import 'dart:convert';
 
 import 'package:ajudafio_mobile/core/error/exceptions.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 abstract interface class AuthRemoteDataResource {
-  Future<void> signUpWithEmailPassword({
+  Future<String> signUpWithEmailPassword({
     required String name,
     required String email,
     required String password,
@@ -18,15 +19,15 @@ abstract interface class AuthRemoteDataResource {
 }
 
 class AuthRemoteDataResourceImpl implements AuthRemoteDataResource {
-  AuthRemoteDataResourceImpl({http.Client? client, String? baseUrl})
-    : _client = client ?? http.Client(),
-      _baseUrl = baseUrl ?? 'http://localhost:8080';
+  AuthRemoteDataResourceImpl({http.Client? client})
+    : _client = client ?? http.Client();
 
   final http.Client _client;
-  final String _baseUrl;
+  final String _baseUrl =
+      dotenv.env['BASE_URL'] ?? 'http://localhost:8080';
 
   @override
-  Future<void> signUpWithEmailPassword({
+  Future<String> signUpWithEmailPassword({
     required String name,
     required String email,
     required String password,
@@ -46,6 +47,15 @@ class AuthRemoteDataResourceImpl implements AuthRemoteDataResource {
     if (response.statusCode != 201) {
       throw ServerException(_extractMessage(response));
     }
+
+    final body = jsonDecode(response.body) as Map<String, dynamic>;
+    final accessToken = body['access_token'] as String?;
+    if (accessToken == null) {
+      throw ServerException(
+        'Register response did not include an access token.',
+      );
+    }
+    return accessToken;
   }
 
   @override

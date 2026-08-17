@@ -10,20 +10,20 @@ class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataResource remoteDataResource;
 
   @override
-  Future<Either<Failure, void>> signUpWithEmailPassword({
+  Future<Either<Failure, String>> signUpWithEmailPassword({
     required String name,
     required String email,
     required String password,
     required String phone,
   }) async {
     try {
-      await remoteDataResource.signUpWithEmailPassword(
+      final token = await remoteDataResource.signUpWithEmailPassword(
         name: name,
         email: email,
         password: password,
         phone: phone,
       );
-      return right(null);
+      return right(token);
     } on ServerException catch (e) {
       return left(Failure(e.message));
     } catch (e) {

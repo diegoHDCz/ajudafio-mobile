@@ -2,8 +2,11 @@ import 'package:ajudafio_mobile/core/theme/theme.dart';
 import 'package:ajudafio_mobile/features/auth/presentation/pages/login_page.dart';
 import 'package:ajudafio_mobile/features/auth/presentation/pages/signup_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: '.env');
   runApp(const MyApp());
 }
 
