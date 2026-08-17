@@ -18,3 +18,9 @@ final class AuthFailure extends AuthState {
   final String message;
   const AuthFailure(this.message);
 }
+
+/// Reached either after a boot-time session restore found no valid
+/// session, or after an explicit logout — distinct from [AuthInitial]
+/// (the bloc's pre-check starting state) so the UI can tell "haven't
+/// checked yet" apart from "checked, definitely logged out".
+final class AuthUnauthenticated extends AuthState {}

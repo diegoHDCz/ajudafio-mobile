@@ -1,6 +1,6 @@
 import 'package:ajudafio_mobile/core/theme/theme.dart';
 import 'package:ajudafio_mobile/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:ajudafio_mobile/features/auth/presentation/pages/login_page.dart';
+import 'package:ajudafio_mobile/features/auth/presentation/pages/auth_gate.dart';
 import 'package:ajudafio_mobile/init_dependencies.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +11,9 @@ Future<void> main() async {
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => serviceLocator<AuthBloc>()),
+        BlocProvider(
+          create: (_) => serviceLocator<AuthBloc>()..add(AuthCheckSession()),
+        ),
       ],
       child: const MyApp(),
     ),
@@ -27,7 +29,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Ajudafio',
       theme: AppTheme.lightThemeMode,
-      home: const LoginPage(),
+      home: const AuthGate(),
     );
   }
 }

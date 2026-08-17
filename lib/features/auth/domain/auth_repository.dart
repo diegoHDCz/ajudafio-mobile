@@ -1,16 +1,21 @@
 import 'package:ajudafio_mobile/core/error/failures.dart';
+import 'package:ajudafio_mobile/features/auth/domain/entities/user.dart';
 import 'package:fpdart/fpdart.dart';
 
 abstract interface class AuthRepository {
-  Future<Either<Failure, String>> signUpWithEmailPassword({
+  Future<Either<Failure, User>> signUpWithEmailPassword({
     required String name,
     required String email,
     required String password,
     required String phone,
   });
 
-  Future<Either<Failure, String>> loginWithEmailPassword({
+  Future<Either<Failure, User>> loginWithEmailPassword({
     required String email,
     required String password,
   });
+
+  Future<Either<Failure, User>> restoreSession();
+
+  Future<void> logout();
 }
