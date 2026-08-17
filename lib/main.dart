@@ -1,26 +1,17 @@
 import 'package:ajudafio_mobile/core/theme/theme.dart';
-import 'package:ajudafio_mobile/features/auth/data/datasources/auth_remote_data_resource.dart';
-import 'package:ajudafio_mobile/features/auth/data/repositories/auth_repository_impl.dart';
-import 'package:ajudafio_mobile/features/auth/domain/usescases/user_sign_up.dart';
 import 'package:ajudafio_mobile/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:ajudafio_mobile/features/auth/presentation/pages/login_page.dart';
+import 'package:ajudafio_mobile/init_dependencies.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: '.env');
+  await initDependencies();
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (_) => AuthBloc(
-            userSignUp: UserSignUp(
-              AuthRepositoryImpl(AuthRemoteDataResourceImpl()),
-            ),
-          ),
-        ),
+        BlocProvider(create: (_) => serviceLocator<AuthBloc>()),
       ],
       child: const MyApp(),
     ),

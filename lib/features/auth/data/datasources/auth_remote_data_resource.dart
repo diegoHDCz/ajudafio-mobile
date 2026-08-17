@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:ajudafio_mobile/core/error/exceptions.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:ajudafio_mobile/core/secrets/app_secret.dart';
 import 'package:http/http.dart' as http;
 
 abstract interface class AuthRemoteDataResource {
@@ -23,8 +23,7 @@ class AuthRemoteDataResourceImpl implements AuthRemoteDataResource {
     : _client = client ?? http.Client();
 
   final http.Client _client;
-  final String _baseUrl =
-      dotenv.env['BASE_URL'] ?? 'http://localhost:8080';
+  final String _baseUrl = AppSecret.baseUrl;
 
   @override
   Future<String> signUpWithEmailPassword({
