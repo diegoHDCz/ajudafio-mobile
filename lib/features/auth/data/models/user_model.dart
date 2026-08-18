@@ -1,5 +1,5 @@
 import 'package:ajudafio_mobile/core/utils/jwt_decoder.dart';
-import 'package:ajudafio_mobile/features/auth/domain/entities/user.dart';
+import 'package:ajudafio_mobile/core/common/entities/user.dart';
 
 class UserModel extends User {
   UserModel({

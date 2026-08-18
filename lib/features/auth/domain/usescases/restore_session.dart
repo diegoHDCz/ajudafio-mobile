@@ -1,7 +1,7 @@
 import 'package:ajudafio_mobile/core/error/failures.dart';
 import 'package:ajudafio_mobile/core/usecase/usecase.dart';
 import 'package:ajudafio_mobile/features/auth/domain/auth_repository.dart';
-import 'package:ajudafio_mobile/features/auth/domain/entities/user.dart';
+import 'package:ajudafio_mobile/core/common/entities/user.dart';
 import 'package:fpdart/fpdart.dart';
 
 class RestoreSession implements UseCase<User, NoParams> {

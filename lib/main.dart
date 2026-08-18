@@ -1,3 +1,4 @@
+import 'package:ajudafio_mobile/core/common/cubits/app_user/app_user_cubit.dart';
 import 'package:ajudafio_mobile/core/theme/theme.dart';
 import 'package:ajudafio_mobile/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:ajudafio_mobile/features/auth/presentation/pages/auth_gate.dart';
@@ -11,6 +12,7 @@ Future<void> main() async {
   runApp(
     MultiBlocProvider(
       providers: [
+        BlocProvider(create: (_) => serviceLocator<AppUserCubit>()),
         BlocProvider(
           create: (_) => serviceLocator<AuthBloc>()..add(AuthCheckSession()),
         ),

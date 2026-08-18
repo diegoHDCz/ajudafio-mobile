@@ -1,5 +1,5 @@
 import 'package:ajudafio_mobile/core/error/failures.dart';
-import 'package:ajudafio_mobile/features/auth/domain/entities/user.dart';
+import 'package:ajudafio_mobile/core/common/entities/user.dart';
 import 'package:fpdart/fpdart.dart';
 
 abstract interface class AuthRepository {

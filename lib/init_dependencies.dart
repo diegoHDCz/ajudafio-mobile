@@ -1,3 +1,4 @@
+import 'package:ajudafio_mobile/core/common/cubits/app_user/app_user_cubit.dart';
 import 'package:ajudafio_mobile/core/network/authenticated_http_client.dart';
 import 'package:ajudafio_mobile/features/auth/data/datasources/auth_local_data_source.dart';
 import 'package:ajudafio_mobile/features/auth/data/datasources/auth_remote_data_resource.dart';
@@ -17,6 +18,8 @@ final serviceLocator = GetIt.instance;
 
 Future<void> initDependencies() async {
   await dotenv.load(fileName: '.env');
+
+  serviceLocator.registerLazySingleton(() => AppUserCubit());
 
   _initAuth();
 }
@@ -53,6 +56,7 @@ void _initAuth() {
         userLogin: serviceLocator(),
         restoreSession: serviceLocator(),
         logoutUser: serviceLocator(),
+        appUserCubit: serviceLocator(),
       ),
     );
 }

@@ -5,7 +5,7 @@ import 'package:ajudafio_mobile/features/auth/data/datasources/auth_remote_data_
 import 'package:ajudafio_mobile/features/auth/data/models/auth_token_model.dart';
 import 'package:ajudafio_mobile/features/auth/data/models/user_model.dart';
 import 'package:ajudafio_mobile/features/auth/domain/auth_repository.dart';
-import 'package:ajudafio_mobile/features/auth/domain/entities/user.dart';
+import 'package:ajudafio_mobile/core/common/entities/user.dart';
 import 'package:fpdart/fpdart.dart';
 
 class AuthRepositoryImpl implements AuthRepository {

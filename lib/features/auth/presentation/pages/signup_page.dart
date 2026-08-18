@@ -59,7 +59,7 @@ class _SignUpPageState extends State<SignUpPage> {
             } else if (state is AuthSuccess) {
               Navigator.pushAndRemoveUntil(
                 context,
-                HomePage.route(state.user),
+                HomePage.route(),
                 (route) => false,
               );
             }

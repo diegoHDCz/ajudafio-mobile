@@ -1,4 +1,5 @@
-import 'package:ajudafio_mobile/features/auth/domain/entities/user.dart';
+import 'package:ajudafio_mobile/core/common/cubits/app_user/app_user_cubit.dart';
+import 'package:ajudafio_mobile/core/common/entities/user.dart';
 import 'package:ajudafio_mobile/features/auth/domain/usescases/logout_user.dart';
 import 'package:ajudafio_mobile/features/auth/domain/usescases/restore_session.dart';
 import 'package:ajudafio_mobile/features/auth/domain/usescases/user_login.dart';
@@ -15,16 +16,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final UserLogin _userLogin;
   final RestoreSession _restoreSession;
   final LogoutUser _logoutUser;
+  final AppUserCubit _appUserCubit;
 
   AuthBloc({
     required UserSignUp userSignUp,
     required UserLogin userLogin,
     required RestoreSession restoreSession,
     required LogoutUser logoutUser,
+    required AppUserCubit appUserCubit,
   }) : _userSignUp = userSignUp,
        _userLogin = userLogin,
        _restoreSession = restoreSession,
        _logoutUser = logoutUser,
+       _appUserCubit = appUserCubit,
        super(AuthInitial()) {
     on<AuthSignUp>(_onAuthSignUp);
     on<AuthLogin>(_onAuthLogin);
@@ -44,7 +48,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
     res.fold(
       (failure) => emit(AuthFailure(failure.message)),
-      (user) => emit(AuthSuccess(user)),
+      (user) => _emitAuthSuccess(user, emit),
     );
   }
 
@@ -55,7 +59,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
     res.fold(
       (failure) => emit(AuthFailure(failure.message)),
-      (user) => emit(AuthSuccess(user)),
+      (user) => _emitAuthSuccess(user, emit),
     );
   }
 
@@ -67,12 +71,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final res = await _restoreSession(const NoParams());
     res.fold(
       (_) => emit(AuthUnauthenticated()),
-      (user) => emit(AuthSuccess(user)),
+      (user) => _emitAuthSuccess(user, emit),
     );
   }
 
   Future<void> _onAuthLogout(AuthLogout event, Emitter<AuthState> emit) async {
     await _logoutUser(const NoParams());
+    _appUserCubit.updateUser(null);
     emit(AuthUnauthenticated());
+  }
+
+  /// Updates [AppUserCubit] — the source of truth other features read the
+  /// logged-in user from — before emitting the local [AuthSuccess] state.
+  void _emitAuthSuccess(User user, Emitter<AuthState> emit) {
+    _appUserCubit.updateUser(user);
+    emit(AuthSuccess(user));
   }
 }

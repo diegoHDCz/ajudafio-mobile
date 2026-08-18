@@ -52,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
             } else if (state is AuthSuccess) {
               Navigator.pushAndRemoveUntil(
                 context,
-                HomePage.route(state.user),
+                HomePage.route(),
                 (route) => false,
               );
             }

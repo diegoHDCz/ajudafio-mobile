@@ -16,7 +16,7 @@ class AuthGate extends StatelessWidget {
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthSuccess) {
-          Navigator.pushReplacement(context, HomePage.route(state.user));
+          Navigator.pushReplacement(context, HomePage.route());
         } else if (state is AuthUnauthenticated) {
           Navigator.pushReplacement(context, LoginPage.route());
         }
