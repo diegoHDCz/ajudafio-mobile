@@ -1,3 +1,4 @@
+import 'package:ajudafio_mobile/core/common/pages/main_shell_page.dart';
 import 'package:ajudafio_mobile/core/common/widgets/loader.dart';
 import 'package:ajudafio_mobile/core/theme/app_pallet.dart';
 import 'package:ajudafio_mobile/core/utils/phone_input_formatter.dart';
@@ -6,7 +7,6 @@ import 'package:ajudafio_mobile/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:ajudafio_mobile/features/auth/presentation/pages/login_page.dart';
 import 'package:ajudafio_mobile/features/auth/presentation/widgets/auth_field.dart';
 import 'package:ajudafio_mobile/features/auth/presentation/widgets/auth_gradient_button.dart';
-import 'package:ajudafio_mobile/features/home/presentation/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -59,7 +59,7 @@ class _SignUpPageState extends State<SignUpPage> {
             } else if (state is AuthSuccess) {
               Navigator.pushAndRemoveUntil(
                 context,
-                HomePage.route(),
+                MainShellPage.route(),
                 (route) => false,
               );
             }
@@ -71,12 +71,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 LayoutBuilder(
                   builder: (context, constraints) {
                     return SingleChildScrollView(
-                      padding: const EdgeInsets.only(
-                        top: 20.0,
-                        left: 20,
-                        right: 20,
-                        bottom: 20.0,
-                      ),
+                      padding: const EdgeInsets.all(20.0),
                       child: ConstrainedBox(
                         constraints: BoxConstraints(
                           minHeight: constraints.maxHeight - 40.0,
